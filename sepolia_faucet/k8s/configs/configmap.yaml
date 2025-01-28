@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: faucet-env
+data:
+  DJANGO_SETTINGS_MODULE: "sepolia_faucet.settings"
+  DEBUG: "true"
+  RATE_LIMIT_TIMEOUT: "60"

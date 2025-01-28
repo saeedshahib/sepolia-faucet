@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faucet-web
+  labels:
+    app: faucet-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: faucet-web
+  template:
+    metadata:
+      labels:
+        app: faucet-web
+    spec:
+      containers:
+      - name: faucet-web
+        image: faucet-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - mountPath: /app/static
+          name: static-files
+        envFrom:
+          - configMapRef:
+              name: faucet-env
+          - secretRef:
+              name: faucet-secrets
+        command:
+          - bash
+          - -c
+          - |
+            python manage.py migrate && gunicorn sepolia_faucet.wsgi:application --bind 0.0.0.0:8000 --workers 3
+      volumes:
+      - name: static-files
+        emptyDir: {}

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: faucet-db
+  labels:
+    app: faucet-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: faucet-db
+  template:
+    metadata:
+      labels:
+        app: faucet-db
+    spec:
+      containers:
+      - name: faucet-db
+        image: postgres:13
+        envFrom:
+          - configMapRef:
+              name: faucet-env
+          - secretRef:
+              name: faucet-secrets
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: faucet-db-storage
+      volumes:
+        - name: faucet-db-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc

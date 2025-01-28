@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: faucet-db
+spec:
+  selector:
+    app: faucet-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
