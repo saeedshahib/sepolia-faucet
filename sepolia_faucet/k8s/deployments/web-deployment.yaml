@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: faucet-web
-        image: faucet-app:latest
+        image: saeedshahib/faucet-app:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
